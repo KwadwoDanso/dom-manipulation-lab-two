@@ -1,8 +1,8 @@
 // Get references to the form, inputs, and error spans
-let form = document.getElementById("registrationForm");
-let usernameInput = document.getElementById("username");
-let emailInput = document.getElementById("email");
-let passwordInput = document.getElementById("password");
+const form = document.getElementById("registrationForm");
+const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
 let confirmInput = document.getElementById("confirmPassword");
 
 let usernameError = document.getElementById("usernameError");
@@ -90,3 +90,47 @@ function validateConfirm() {
     clearError(confirmInput, confirmError);
     return true;
 }
+
+// Real-time validation as the user types
+usernameInput.addEventListener("input", validateUsername);
+emailInput.addEventListener("input", validateEmail);
+passwordInput.addEventListener("input", function () {
+    validatePassword();
+    // Re-check confirm if the user has already typed something there
+    if (confirmInput.value) {
+        validateConfirm();
+    }
+});
+confirmInput.addEventListener("input", validateConfirm);
+
+// Handle form submission
+form.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Run all validators
+    let usernameValid = validateUsername();
+    let emailValid = validateEmail();
+    let passwordValid = validatePassword();
+    let confirmValid = validateConfirm();
+
+    // Focus the first invalid field and stop
+    if (!usernameValid) { usernameInput.focus(); return; }
+    if (!emailValid) { emailInput.focus(); return; }
+    if (!passwordValid) { passwordInput.focus(); return; }
+    if (!confirmValid) { confirmInput.focus(); return; }
+
+    // All valid — save username, show success, reset the form
+    localStorage.setItem("username", usernameInput.value);
+    successMessage.textContent = "Registration successful! Welcome, " + usernameInput.value + ".";
+
+    form.reset();
+
+    // Re-fill username from localStorage after reset
+    usernameInput.value = localStorage.getItem("username");
+
+    // Remove valid/invalid styling from all inputs
+    let inputs = form.querySelectorAll("input");
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].classList.remove("valid", "invalid");
+    }
+});
