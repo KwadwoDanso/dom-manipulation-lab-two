@@ -1,8 +1,8 @@
 // Get references to the form, inputs, and error spans
-let form = document.getElementById("registrationForm");
-let usernameInput = document.getElementById("username");
-let emailInput = document.getElementById("email");
-let passwordInput = document.getElementById("password");
+const form = document.getElementById("registrationForm");
+const usernameInput = document.getElementById("username");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
 let confirmInput = document.getElementById("confirmPassword");
 
 let usernameError = document.getElementById("usernameError");
@@ -108,10 +108,10 @@ form.addEventListener("submit", function (event) {
     event.preventDefault();
 
     // Run all validators
-    var usernameValid = validateUsername();
-    var emailValid = validateEmail();
-    var passwordValid = validatePassword();
-    var confirmValid = validateConfirm();
+    let usernameValid = validateUsername();
+    let emailValid = validateEmail();
+    let passwordValid = validatePassword();
+    let confirmValid = validateConfirm();
 
     // Focus the first invalid field and stop
     if (!usernameValid) { usernameInput.focus(); return; }
@@ -129,7 +129,7 @@ form.addEventListener("submit", function (event) {
     usernameInput.value = localStorage.getItem("username");
 
     // Remove valid/invalid styling from all inputs
-    var inputs = form.querySelectorAll("input");
+    let inputs = form.querySelectorAll("input");
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].classList.remove("valid", "invalid");
     }
